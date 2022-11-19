@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget{
   }
 }
 class MyHomePage extends StatelessWidget{
-  final ValueNotifier<Alignment> _aligment=ValueNotifier(Alignment.bottomCenter);
+  final ValueNotifier<Alignment> _aligment=ValueNotifier(Alignment.bottomCenter);//飛機起始位置
 
 
   @override
@@ -42,15 +42,14 @@ class MyHomePage extends StatelessWidget{
         primary: Colors.lightBlue,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       ),
-      onPressed: ()=>_aligment.value=Alignment.topCenter,
+      onPressed: ()=>_aligment.value=Alignment.topCenter,//對齊方式,飛行軌道
       );
-
     final widget=Center(
       child: Container(
         height: 500,
         child: Column(
           children: <Widget>[
-            ValueListenableBuilder<Alignment>(
+            ValueListenableBuilder<Alignment>( //<>資料型態
               builder: _animatedContainerBuilder,
                 valueListenable: _aligment,
             ),
@@ -63,20 +62,22 @@ class MyHomePage extends StatelessWidget{
         ),
       ),
     );
+    //結合AppBar和App操作畫面
     final appHomePage= Scaffold(
       appBar: appBar,
       body: widget,
     );
     return appHomePage;
   }
+   //重建AnimatedContainer
   Widget _animatedContainerBuilder(BuildContext context,Alignment alignment,Widget? child){
     final wid= Expanded(
       child: AnimatedContainer(
-        duration: const Duration(seconds: 3),
-        curve: Curves.fastOutSlowIn,
+        duration: const Duration(seconds: 3), //飛行時間//控制動畫持續時間
+        curve: Curves.fastOutSlowIn, //飛機跑的模式//控制動畫速度的變化
         child: const Icon(Icons.airplanemode_active,color: Colors.lightBlue,size: 50),
         alignment: alignment,
-        onEnd: ()=>_aligment.value=Alignment.bottomCenter,
+        onEnd: ()=>_aligment.value=Alignment.bottomCenter,//飛機結束位置//動畫結束時執行它
       ),
     );
     return wid;
